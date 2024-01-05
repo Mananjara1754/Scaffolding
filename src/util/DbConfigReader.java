@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import scaffolding.DBConfig;
 
 public class DbConfigReader {
-    String filePath="E:/_S5/ProjectNetBeans/Generating/src/configFiles/dbconfigs.json";
+    String filePath = System.getProperty("user.dir")+"/src/configFiles/dbconfigs.json";
     //String cheminExecution = System.getProperty("user.dir");
     
     public DBConfig read() throws Exception{

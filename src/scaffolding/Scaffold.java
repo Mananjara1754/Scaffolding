@@ -4,27 +4,31 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 
 import util.DbConfigReader;
+import util.StringUtil;
 
 public class Scaffold {
     String motdepasse;
     Table table;
     Modele modele;
     String language;
+    
     public static void generateController(String motdepasse, String table, String nomModele,String nompackage,String language) throws Exception{
         Scaffold scaffold = new Scaffold(motdepasse, table, nomModele,nompackage,language);
         DbConfigReader reader = new DbConfigReader();
         DBConfig dbconfigs = reader.read();
-        scaffold.getTable().getColonnes(motdepasse,dbconfigs,language);
+        //scaffold.getTable().getColonnes(motdepasse,dbconfigs,language);
         scaffold.createControllerFile();
     }
+    
     public static void generate(String motdepasse, String table, String nomModele,String nompackage,String language) throws Exception{
         Scaffold scaffold = new Scaffold(motdepasse, table, nomModele,nompackage,language);
         DbConfigReader reader = new DbConfigReader();
         DBConfig dbconfigs = reader.read();
         scaffold.getTable().getColonnes(motdepasse,dbconfigs,language);
-        scaffold.createControllerFile();
+        scaffold.createModelFile();
     }
 
     public Scaffold(String motdepasse, String table, String nomModele,String nompackage,String langage) {
@@ -38,13 +42,17 @@ public class Scaffold {
         
     }
     public void createControllerFile() throws Exception{
-        if(language.compareTo("java")==0){
+        if(language.compareTo("spring")==0){
             createSpringController();
         }
-        else if(language.compareTo("csharp")==0){
+        if(language.compareTo("java-ours")==0){
+            createOurFrameworkController();
+        }
+        else if(language.compareTo("dotnet")==0){
             createCSharpController();            
         }
     }
+    
     public void createModelFile() throws Exception{
         if(language.compareTo("java")==0){
             createJavaModel();
@@ -53,28 +61,76 @@ public class Scaffold {
             createCSharpModel();
         }
     }
+    
     public void createCSharpModel() throws Exception{
         createFile("TemplateCSHARP.cs", "cs");
     }
+    
     public void createJavaModel() throws Exception {
         createFile("TemplateJAVA.java", "java");
     }
+    
     public void createCSharpController() throws Exception{
-        createController("TemplateCSHARP.cs", "cs");
+        createController("controler.template", "cs");
     }
+    
     public void createSpringController() throws Exception {
-        createController("TemplateSpring.java", "java");
+        createController("controler.template", "java");
     }
+    
+    public void createOurFrameworkController() throws Exception {
+        createController("TemplateOurFramework.java", "java");
+    }
+    
+    public String transformTemplate(String contenuTemplate) throws  Exception {
+        //System.out.println(contenuTemplate);
+        try {
+            List<String> librairies = null;
+            String lib = "";
+            librairies = StringUtil.getLibraries(language);
+            for (String l : librairies) {
+                lib = lib + "##importkey## "+ l + " ##endline## \n";
+            }
+            contenuTemplate = contenuTemplate.replace("##libraries##", lib);
+            
+            String[] split = contenuTemplate.split("\\s+");
+            
+            //System.out.println(contenuTemplate);
+            for (String string : split) {
+                contenuTemplate = contenuTemplate.replace(string, StringUtil.getValue(language, string) );
+                //System.out.println(string + " " + StringUtil.getValue(language, string));
+                
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        
+        //System.out.println(contenuTemplate);
+        return contenuTemplate;
+    }
+    
+    public String transformContenuTemplate(String contenuTemplate) throws  Exception  {
+        try {
+            contenuTemplate = contenuTemplate.replace("##ClassName##", modele.getFileName());
+            //contenuTemplate = contenuTemplate.replace("##import##", table.getImportCode(language));
+            contenuTemplate = contenuTemplate.replace("##package##", modele.getNompackage());
+            contenuTemplate = contenuTemplate.replace("##EntityName##", modele.getFileName());  
+        } catch (Exception e) {
+            throw e;
+        }
+        //System.out.println(contenuTemplate);
+        return contenuTemplate;
+        
+    }
+    
     public void createController(String templateName,String extension) throws Exception{
-        String templatePath = "E:/_S5/Framework/scaffolding/scaffolding/template_controller/"+templateName;
+        String templatePath = "F:/_S5/ProjectNetBeans/templates/"+templateName;
         byte[] bytes = Files.readAllBytes(Paths.get(templatePath));
         String contenuTemplate = new String(bytes);
-        contenuTemplate = contenuTemplate.replace("##classname##", modele.getFileName());
-        contenuTemplate = contenuTemplate.replace("##import##", table.getImportCode(language));
-        contenuTemplate = contenuTemplate.replace("##package##", modele.getNompackage());
-        contenuTemplate = contenuTemplate.replace("##EntityName##", modele.getFileName());       
+        contenuTemplate = transformTemplate(contenuTemplate);
+        contenuTemplate = transformContenuTemplate(contenuTemplate);
         String newPath = modele.getFileName()+"."+extension;
-        String chemin = "E:/_S5/ProjectNetBeans/Generating/src/Controller";
+        String chemin = System.getProperty("user.dir")+"/src/output";
         System.out.println("Path Model "+ chemin+"/"+newPath);
         //Files.writeString(Paths.of(chemin+"/"+ newPath), contenuTemplate, StandardOpenOption.CREATE);
         Files.write(Paths.get(chemin, newPath), contenuTemplate.getBytes(), StandardOpenOption.CREATE);
@@ -86,7 +142,7 @@ public class Scaffold {
         // if(templateDIR == null){
         //     throw new Exception("Aucune variable d'environnement specifie pour templateDIR");
         // }
-        String templatePath = "E:/_S5/Framework/scaffolding/scaffolding/templates/"+templateName;
+        String templatePath = "F:/_S5/ProjectNetBeans/templates/"+templateName;
         //String templatePath = templateDIR+"/"+templateName;
         //String contenuTemplate = Files.readString(Path.of(templatePath));
         byte[] bytes = Files.readAllBytes(Paths.get(templatePath));
@@ -97,7 +153,7 @@ public class Scaffold {
         contenuTemplate = contenuTemplate.replace("##attributs##", table.getAttributsCode());
         contenuTemplate = contenuTemplate.replace("##getterssetters##", table.getGettersSettersCode(language));
         String newPath=modele.getFileName()+"."+extension;
-        String chemin = "E:/_S5/ProjectNetBeans/Generating/src/output";
+        String chemin = System.getProperty("user.dir")+"/src/output";
         System.out.println("Path Model "+ chemin+"/"+newPath);
         //Files.writeString(Paths.of(chemin+"/"+ newPath), contenuTemplate, StandardOpenOption.CREATE);
         Files.write(Paths.get(chemin, newPath), contenuTemplate.getBytes(), StandardOpenOption.CREATE);

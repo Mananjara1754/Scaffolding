@@ -42,6 +42,7 @@ public class Table {
         }
         return code.toString();
     }
+    
     public String getGettersSettersCode(String language){
         StringBuilder gettersSettersCode = new StringBuilder();
         if(language.compareTo("java")==0){
@@ -83,6 +84,7 @@ public class Table {
         }
         return gettersSettersCode.toString();
     }
+    
     public void getColonnes(String password,DBConfig configs,String language) throws Exception{
         Connect connect = new Connect(password,configs);
         Connection connection = connect.getConnectionPostgresql();
@@ -113,6 +115,7 @@ public class Table {
         }
         
     }
+    
     public Table(String nomTable) {
         this.nomTable = nomTable;
     }

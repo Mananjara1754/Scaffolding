@@ -2,6 +2,6 @@
     "SGBD": "postgresql",
     "hote": "localhost",
     "port": "5432",
-    "base_de_donnees": "commerce",
-    "nom_utilisateur": "commerce"
+    "base_de_donnees": "baovola",
+    "nom_utilisateur": "baovola"
 }
