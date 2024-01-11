@@ -2,22 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/configFiles/classvariable.json</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/run/Generate.java</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/util/StringUtil.java</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/configFiles/dbconfigs.json</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/scaffolding/Scaffold.java</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/scaffolding/Column.java</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/output/Joueur.java</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/scaffolding/DynamicClassGenerator.java</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/configFiles/controllervariable.json</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/scaffolding/Modele.java</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/configFiles/sqltypelanguage.json</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/util/DbConfigReader.java</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/scaffolding/DBConfig.java</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/scaffolding/MyClasse.java</file>
-            <file>file:/home/hasinjara/z_mael/etude/Doc_S5/framework/prod/Generating/src/scaffolding/Table.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
